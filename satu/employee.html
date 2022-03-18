@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>employee</title>
   </head>
   <body>
     <center>
@@ -22,12 +22,8 @@
       input, select, button {
         background-color: rgb(238, 238, 238);
       }
-      fieldset {
-        align-items: center;
-        justify-content: center;
-      }
     </style>
-    <fieldset>
+    <!-- <fieldset>
       <legend>Employee Information</legend>
       <label for="fName">First name:</label>
       <input type="text" id="fName" name="fName" />
@@ -56,7 +52,7 @@
       <br />
       <button onclick="addData()">Create Data</button>
       <button onclick="deleteData()">delete Data</button>
-    </fieldset>
+    </fieldset> -->
 
     <br />
 
@@ -85,8 +81,8 @@
       <legend>Sort Employee</legend>
       <label for="sortDir">Order</label>
       <select id="sortDir">
-        <option value="">Ascending</option>
-        <option value="">Descending</option>
+        <option value="asc">Ascending</option>
+        <option value="desc">Descending</option>
       </select>
       <br />
       <br />
@@ -106,7 +102,7 @@
           <th>Email</th>
           <th>Occupation</th>
           <th>Age</th>
-          <!-- <th colspan="2">Action</th> -->
+          <th colspan="2">Action</th>
         </tr>
       </thead>
 
@@ -236,7 +232,7 @@
           renderData(copyEmployeeDatabase)
         } else if (sortDir == "desc") {
           copyEmployeeDatabase.sort((a, b) => {
-            if (sortKey == "fullName") {
+            if (sortKey == "fName") {
               a = a[sortKey].toLowerCase()
               b = b[sortKey].toLowerCase()
             } else if (sortKey == "age") {
@@ -263,8 +259,7 @@
   </body>
 </html>
 
-<!-- 
-  1. Inisialisasi Repository (Sekali saja)
+  <!-- 1. Inisialisasi Repository (Sekali saja)
     a. git init
     b. git remote add origin <URL_GITHUB_REPO>
   2. Setiap ada perubahan file
@@ -274,7 +269,7 @@
   3. Mac users (sekali seumur hidup)
     a. git config --global init.defaultBranch main
     b. git branch -m main
- -->
+ --> 
 
 <!-- 
    feat -> feature. Digunakan ketika ada perubahan di fitur.
@@ -284,4 +279,4 @@
    chore -> digunakan ketika merapikan tetapi tidak mengubah
             fungsi
    ref -> digunakan ketika melakukan perapihan fitur atau optimasi
-  -->
+  
