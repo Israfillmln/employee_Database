@@ -4,33 +4,29 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>employee</title>
+    <title>Document</title>
   </head>
   <body>
     <center>
     <style>
+      body, input, select, button {
+        background-color: rgb(204, 204, 204);
+      }
       table,
       td,
       th {
-        margin-top: 50px;
         border-collapse: collapse;
         border: 1px solid black;
-      }
-      body {
-        background-color: rgb(192, 191, 191);
-      }
-      input, select, button {
-        background-color: rgb(238, 238, 238);
       }
     </style>
     <!-- <fieldset>
       <legend>Employee Information</legend>
-      <label for="fName">First name:</label>
-      <input type="text" id="fName" name="fName" />
+      <label for="firstName">First name:</label>
+      <input type="text" id="firstName" name="firstName" />
       <br />
       <br />
-      <label for="lName">Last name:</label>
-      <input type="text" id="lName" name="lName" />
+      <label for="lastName">Last name:</label>
+      <input type="text" id="lastName" name="lastName" />
       <br />
       <br />
       <label for="email">Email:</label>
@@ -51,13 +47,12 @@
       <br />
       <br />
       <button onclick="addData()">Create Data</button>
-      <button onclick="deleteData()">delete Data</button>
     </fieldset> -->
 
     <br />
 
     <fieldset>
-      <legend><h2>Search Employee</h2></legend>
+      <legend>Search Employee</legend>
       <label for="searchName">Employee Name:</label>
       <input type="text" id="searchName" name="searchName" />
       <br />
@@ -86,7 +81,7 @@
       </select>
       <br />
       <br />
-      <button onclick="sortData('fName')">Sort Employee By Name</button>
+      <button onclick="sortData('fullName')">Sort Employee By Name</button>
       <button onclick="sortData('age')">Sort Employee By Age</button>
       <button onclick="sortData()">Reset Sort</button>
     </fieldset>
@@ -120,10 +115,10 @@
       }
 
       let employeeDatabase = [
-        new Employee("Buto", "Software Developer", "Buto@mail.com", 17),
-        new Employee("Acce", "Digital Marketer", "Acce@mail.com", 21),
-        new Employee("Cebba", "UI/UX", "Cebba@mail.com", 13),
-        new Employee("Dengemba", "Data Scientist", "Dengemba@mail.com", 30),
+        new Employee("Acce", "Software Developer", "mark@mail.com", 17),
+        new Employee("Becce", "Digital Marketer", "steve@mail.com", 21),
+        new Employee("Cecce", "UI/UX", "bill@mail.com", 13),
+        new Employee("Decce", "Data Scientist", "seto@mail.com", 30),
       ];
 
       const renderData = (dataToRender = []) => {
@@ -145,8 +140,8 @@
       };
 
       const addData = () => {
-        const firstName = document.getElementById("fName").value;
-        const lastName = document.getElementById("lName").value;
+        const firstName = document.getElementById("firstName").value;
+        const lastName = document.getElementById("lastName").value;
         const email = document.getElementById("email").value;
         const age = document.getElementById("age").value;
         const occupation = document.getElementById("occupation").value;
@@ -161,28 +156,9 @@
         employeeDatabase.push(newEmployee);
 
         renderData(employeeDatabase);
-
-        document.getElementById("fName").value = ""
-        document.getElementById("lName").value = ""
-        document.getElementById("email").value = ""
-        document.getElementById("age").value = ""
       };
 
       renderData(employeeDatabase);
-
-      const deleteData = (deleteIndex) => {
-
-        let shouldDelete = confirm("tojeng jko hapuski?")
-
-        if (shouldDelete) {
-
-        employeeDatabase.splice(deleteIndex, 1)
-
-        }
-
-        renderData();
-
-      }
 
       const searchEmployees = () => {
         let searchEmployeeNameValue =
@@ -192,7 +168,12 @@
 
         let filteredData = employeeDatabase.filter((val) => {
           return (
-            val.fullName.toLowerCase().includes(searchEmployeeNameValue.toLowerCase()) && val.occupation.toLowerCase().includes(searchEmployeeOccupationValue.toLowerCase())
+            val.fullName
+              .toLowerCase()
+              .includes(searchEmployeeNameValue.toLowerCase()) &&
+            val.occupation
+              .toLowerCase()
+              .includes(searchEmployeeOccupationValue.toLowerCase())
           );
         });
 
@@ -210,7 +191,7 @@
 
         if (sortDir == "asc") {
           copyEmployeeDatabase.sort((a, b) => {
-            if (sortKey == "fName") {
+            if (sortKey == "fullName") {
               a = a[sortKey].toLowerCase()
               b = b[sortKey].toLowerCase()
             } else if (sortKey == "age") {
@@ -232,7 +213,7 @@
           renderData(copyEmployeeDatabase)
         } else if (sortDir == "desc") {
           copyEmployeeDatabase.sort((a, b) => {
-            if (sortKey == "fName") {
+            if (sortKey == "fullName") {
               a = a[sortKey].toLowerCase()
               b = b[sortKey].toLowerCase()
             } else if (sortKey == "age") {
@@ -259,7 +240,8 @@
   </body>
 </html>
 
-  <!-- 1. Inisialisasi Repository (Sekali saja)
+<!-- 
+  1. Inisialisasi Repository (Sekali saja)
     a. git init
     b. git remote add origin <URL_GITHUB_REPO>
   2. Setiap ada perubahan file
@@ -269,7 +251,7 @@
   3. Mac users (sekali seumur hidup)
     a. git config --global init.defaultBranch main
     b. git branch -m main
- --> 
+ -->
 
 <!-- 
    feat -> feature. Digunakan ketika ada perubahan di fitur.
@@ -279,4 +261,4 @@
    chore -> digunakan ketika merapikan tetapi tidak mengubah
             fungsi
    ref -> digunakan ketika melakukan perapihan fitur atau optimasi
-  
+  -->
