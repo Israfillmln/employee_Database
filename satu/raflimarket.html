@@ -11,7 +11,13 @@
   <title>Belanja</title>
 </head>
 <body class="container">
-  <table class="table text-center">
+  <style>
+    body{
+      background-color: rgb(196, 196, 196);
+    }
+  </style>
+  <center>
+  <table class="table text-center table-hover">
     <thead>
       <tr>
         <th>Product Image</th>
@@ -23,24 +29,6 @@
       </tr>
     </thead>
     <tbody id="listData">
-      <tr style="vertical-align: middle;">
-        <td><img width="350px" src="https://www.ccarprice.com/products/BMW-i8-Coupe-2020.jpg"></td>
-        <td>BMW i8</td>
-        <td>$ 147,500</td>
-        <td>10</td>
-        <td>0</td>
-        <td><button class="btn btn-secondary">-</button></td>
-        <td><button class="btn btn-secondary">+</button></td>
-      </tr>
-      <tr style="vertical-align: middle;">
-        <td><img width="350px" src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6c/Lamborghini_Huracan_20150525_7811.jpg/2560px-Lamborghini_Huracan_20150525_7811.jpg"></td>
-        <td>Lamborghini Huracan</td>
-        <td>$ 327,850</td>
-        <td>10</td>
-        <td>0</td>
-        <td><button class="btn btn-secondary">-</button></td>
-        <td><button class="btn btn-secondary">+</button></td>
-      </tr>
     </tbody>
   </table>
   <center>
@@ -54,8 +42,8 @@
   <script>
       class Car {
         constructor(productName, productImage, price, stock) {
-        this.productImage = productImage
         this.productName = productName
+        this.productImage = productImage
         this.price = price
         this.stock = stock
         this.cartQuantity = 0
@@ -66,43 +54,63 @@
         }
 
         const mobil = [
-          new Car("BMW i8", 147,500),
-          new Car("Lamborghini Huracan", 327,850),
+          new Car("BMW i8", "https://www.ccarprice.com/products/BMW-i8-Coupe-2020.jpg", 147500, 10),
+          new Car("Lamborghini Huracan", "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6c/Lamborghini_Huracan_20150525_7811.jpg/2560px-Lamborghini_Huracan_20150525_7811.jpg", 327850, 100),
+          new Car("Lamborghini Aventador", "https://imgx.gridoto.com/crop/0x0:0x0/700x465/photo/2019/10/21/4111273287.jpg", 297350, 50),
         ];
-        console.log(mobil)
-
+        
         const renderData = () => {
-            let theProduct = "";
+            let htmlResult = "";
             
-            mobil.forEach((value, index) => {
-                theProduct += `
+            mobil.forEach((val, index) => {
+                htmlResult += `
           <tr style="vertical-align: middle">
+            <td><img width="350px" alt="mobil" src=${val.productImage}></td>
             <td>${val.productName}</td>
             <td>$ ${val.price.toLocaleString()}</td>
-            <td id="stockItem${idx + 1}">${val.stock}</td>
-            <td id="quantityItem${idx + 1}">${val.quantity}</td>
+            <td id="stockItem">${val.stock}</td>
+            <td id="quantityItem">${val.cartQuantity}</td>
              
             <td colspan ="2"> 
-                <button class="btn btn-secondary" id="minusItemOne" onclick="kurang(${idx + 1})"> - </button>
-                <button class="btn btn-secondary" id="plusItemOne" onclick="tambah(${idx + 1})" > + </button>
+                <button class="btn btn-outline-dark" id="minusItemOne" onclick="kurang(${index})"> - </button>
+                <button class="btn btn-outline-dark" id="plusItemOne" onclick="tambah(${index})" > + </button>
             </td>
           </tr> `
         });
-        document.getElementById("tableData").innerHTML = theProduct
+        document.getElementById("listData").innerHTML = htmlResult
         };
 
         renderData();
         
-        const tambah = (nomor) => {
-          let quantityCart = mobil[nomor - 1].quantity;
-          let stock = mobil[nomor - 1].stock;
-          mobil[nomor - 1].quantity += 1;
+        const tambah = (carIndex) => {
+          const theCar = mobil[carIndex].cartQuantity;
+          const stock = mobil[carIndex].stock;
+          if(theCar < stock ){
+            
+            mobil[carIndex].cartQuantity += 1;
+            // mobil[carIndex].stock -= 1;
+
+          } else{
+
+            alert("tabe begitu ji ada!!!")
+
+          }
           renderData();
           return;
         };
-        const kurang = (nomor) => {
-          let quantityCart = mobil[nomor - 1].quantity;
-          mobil[nomor - 1].quantity -= 1;
+        const kurang = (carIndex) => {
+          const theCar = mobil[carIndex].cartQuantity;
+          const stock = mobil[carIndex].stock;
+          if(theCar){
+            
+            mobil[carIndex].cartQuantity -= 1;
+            // mobil[carIndex].stock -= 1;
+
+          } else if (theCar < stock) {
+
+            alert("tabe di, niat jki belli???")
+            
+          }
           renderData();
           return;
         };
@@ -123,6 +131,6 @@
         };
 
   </script>
-  <!-- not running yet -->
+  </center>
 </body>
 </html>
