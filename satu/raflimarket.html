@@ -47,14 +47,19 @@
         this.price = price
         this.stock = stock
         this.cartQuantity = 0
-      }
-      calculateTotalPrice = () => {
+       }
+        calculateTotalPrice = () => {
         return this.price * this.cartQuantity
-      }   
-        }
+       }
+       checkout = () => {
+         let Total = this.calculateTotalPrice
+         this.stock -= this.cartQuantity
+         this.cartQuantity = 0
+       }
+    }
 
         const mobil = [
-          new Car("BMW i8", "https://www.ccarprice.com/products/BMW-i8-Coupe-2020.jpg", 147500, 10),
+          // new Car("BMW i8", "https://www.ccarprice.com/products/BMW-i8-Coupe-2020.jpg", 147500, 10),
           new Car("Lamborghini Huracan", "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6c/Lamborghini_Huracan_20150525_7811.jpg/2560px-Lamborghini_Huracan_20150525_7811.jpg", 327850, 100),
           new Car("Lamborghini Aventador", "https://imgx.gridoto.com/crop/0x0:0x0/700x465/photo/2019/10/21/4111273287.jpg", 297350, 50),
         ];
@@ -84,50 +89,46 @@
         
         const editCart = (carIndex, editType) => {
           const theCar = mobil[carIndex];
-
+          
           if (editType == "increment") {
-              if(theCar.cartQuantity < theCar.stock ){
+            if(theCar.cartQuantity < theCar.stock ){
               
               theCar.cartQuantity += 1;
-
-              renderData();
               
             } else{
               
               alert("tabe begitu ji ada!!!")
               
             }
+            renderData();
+            
           } else if (editType == "decrement") {
-              if(theCar.cartQuantity > 0){
+            if(theCar.cartQuantity > 0){
               
               theCar.cartQuantity -= 1;
-              
-              renderData();
               
             } else {
               
               alert("tabe di, niat jki belli???")
-
+              
             }
+            renderData();
+            
           }
         }
-
+        
         const checkout = () => {
-          let total = `Total Belanja anda: $ `;
           let cartTotal = 0;
-          for (let i = 0; i < mobil.length; i++) {
-            cartTotal += mobil[i].totalBuy();
-            mobil[i].stock -= mobil[i].quantity;
-            mobil[i].quantity = 0;
-          }
-          // renderData();
-          // console.log(cartTotal);
-          // total += cartTotal.toLocaleString();
-  
-          document.getElementById("checkout").innerHTML = total;
-          // alert("test")
-        };
 
+          mobil.forEach((val, idx) => {
+            val.checkout()
+          })
+
+            document.getElementById("checkout").innerHTML = `<H2>Total na Semua : $ ${cartTotal.toLocaleString()}</H2>`;
+
+            renderData();
+          };
+          
   </script>
   </center>
 </body>
