@@ -72,8 +72,8 @@
             <td id="quantityItem">${val.cartQuantity}</td>
              
             <td colspan ="2"> 
-                <button class="btn btn-outline-dark" id="minusItemOne" onclick="kurang(${index})"> - </button>
-                <button class="btn btn-outline-dark" id="plusItemOne" onclick="tambah(${index})" > + </button>
+                <button class="btn btn-outline-dark" onclick="editCart(${index}, 'decrement')"> - </button>
+                <button class="btn btn-outline-dark" onclick="editCart(${index}, 'increment')" > + </button>
             </td>
           </tr> `
         });
@@ -82,52 +82,50 @@
 
         renderData();
         
-        const tambah = (carIndex) => {
-          const theCar = mobil[carIndex].cartQuantity;
-          const stock = mobil[carIndex].stock;
-          if(theCar < stock ){
-            
-            mobil[carIndex].cartQuantity += 1;
-            // mobil[carIndex].stock -= 1;
+        const editCart = (carIndex, editType) => {
+          const theCar = mobil[carIndex];
 
-          } else{
+          if (editType == "increment") {
+              if(theCar.cartQuantity < theCar.stock ){
+              
+              theCar.cartQuantity += 1;
 
-            alert("tabe begitu ji ada!!!")
+              renderData();
+              
+            } else{
+              
+              alert("tabe begitu ji ada!!!")
+              
+            }
+          } else if (editType == "decrement") {
+              if(theCar.cartQuantity > 0){
+              
+              theCar.cartQuantity -= 1;
+              
+              renderData();
+              
+            } else {
+              
+              alert("tabe di, niat jki belli???")
 
+            }
           }
-          renderData();
-          return;
-        };
-        const kurang = (carIndex) => {
-          const theCar = mobil[carIndex].cartQuantity;
-          const stock = mobil[carIndex].stock;
-          if(theCar){
-            
-            mobil[carIndex].cartQuantity -= 1;
-            // mobil[carIndex].stock -= 1;
+        }
 
-          } else if (theCar < stock) {
-
-            alert("tabe di, niat jki belli???")
-            
-          }
-          renderData();
-          return;
-        };
-        
         const checkout = () => {
-          let total = `Total Belanja anda: Rp. `;
+          let total = `Total Belanja anda: $ `;
           let cartTotal = 0;
           for (let i = 0; i < mobil.length; i++) {
             cartTotal += mobil[i].totalBuy();
             mobil[i].stock -= mobil[i].quantity;
             mobil[i].quantity = 0;
           }
-          renderData();
-          console.log(cartTotal);
-          total += cartTotal.toLocaleString();
+          // renderData();
+          // console.log(cartTotal);
+          // total += cartTotal.toLocaleString();
   
-          document.getElementById("allTotalBuy").innerHTML = total;
+          document.getElementById("checkout").innerHTML = total;
+          // alert("test")
         };
 
   </script>
