@@ -52,9 +52,11 @@
         return this.price * this.cartQuantity
        }
        checkout = () => {
-         let Total = this.calculateTotalPrice
+         let Total = this.calculateTotalPrice()
          this.stock -= this.cartQuantity
          this.cartQuantity = 0
+
+         return Total
        }
     }
 
@@ -121,11 +123,11 @@
           let cartTotal = 0;
 
           mobil.forEach((val, idx) => {
-            val.checkout()
+           cartTotal += val.checkout()
           })
-
-            document.getElementById("checkout").innerHTML = `<H2>Total na Semua : $ ${cartTotal.toLocaleString()}</H2>`;
-
+           
+           document.getElementById("checkout").innerHTML = `<H2>Total na Semua : $ ${cartTotal.toLocaleString()}</H2>`;
+           
             renderData();
           };
           
