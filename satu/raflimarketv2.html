@@ -13,7 +13,12 @@
   <title>Belanja</title>
 </head>
 
-<body class="container">
+<body class="container py-5">
+  <style>
+    body {
+      background-color: rgb(240, 240, 240);
+    }
+  </style>
   <table class="table text-center">
     <thead>
       <tr>
@@ -52,6 +57,14 @@
         return this.price * this.cartQuantity
       }
 
+      checkout = () => {
+        let totalPrice = this.calculateTotalPrice();
+        this.stock -= this.cartQuantity
+        this.cartQuantity = 0
+
+        return totalPrice
+      }
+
     }
 
     let mobil = [
@@ -60,6 +73,11 @@
         "https://www.ccarprice.com/products/BMW-i8-Coupe-2020.jpg",
         147500,
         10,
+      ),
+      new Car("Lamborghini Aventador", 
+        "https://imgx.gridoto.com/crop/0x0:0x0/700x465/photo/2019/10/21/4111273287.jpg", 
+        297350, 
+        50
       ),
       new Car(
         "Lamborghini Huracan",
@@ -80,8 +98,8 @@
             <td>$ ${val.price.toLocaleString()}</td>
             <td>${val.stock}</td>
             <td>${val.cartQuantity}</td>
-            <td><button onclick="editCart(${idx}, 'decrement')" class="btn btn-secondary">-</button></td>
-            <td><button onclick="editCart(${idx}, 'increment')" class="btn btn-secondary">+</button></td>
+            <td><button onclick="editCart(${idx}, 'decrement')" class="btn btn-outline-dark">-</button></td>
+            <td><button onclick="editCart(${idx}, 'increment')" class="btn btn-outline-dark">+</button></td>
           </tr>
         `
       })
@@ -96,102 +114,89 @@
 
       if (editType == "increment") {
         if (product.cartQuantity < product.stock) {
-          product.cartQuantity += 1
+          product.cartQuantity ++
 
-          renderData()
         } else {
-          alert("10 ji ada!")
+          alert("begituji ada !")
         }
+        renderData()
       } else if (editType == "decrement") {
         if (product.cartQuantity > 0) {
-          product.cartQuantity -= 1
+          product.cartQuantity --
 
-          renderData()
         } else {
-          alert("kalo nda moko belli, pulang mko!")
+          alert("tabe di, niat jki belli???")
         }
+        renderData()
       }
     }
 
-    let hitungMundur
-    
-    const checkout = () => {
-      let totalPrice = 0;
-      let counter = 10;
-      
-      hitungMundur = setInterval(() => {
-        counter--
-        document.getElementById("countDown").innerHTML = counter
-        if(counter < 0){
-          alert("batalkah? kalo jadiji ulangi!")
-          stopIt()
-          let noCheckout = document.getElementById("checkout").innerHTML = ""
-        }
-      }, 1000);
+    const transactionsTotal = () => {
+      let totalPrice = 0
 
-      mobil.forEach((val, idx) => {
+      mobil.forEach((val) => {
         totalPrice += val.calculateTotalPrice()
       })
 
-      document.getElementById("checkout").innerHTML = 
-      `<h3>Total : $ ${totalPrice.toLocaleString()},- </h3>
-      <input type="number" id="uang" placeholder="Berapa Uangta?">
-      <button class="btn btn-secondary" onclick="bayar()">bayarmi?</button>
-      <button class="btn btn-dark" onclick="kembali()">batal?</button>
-      <h1>Sisa Waktu : <span id="countDown">${counter}</span></h1>`
+      return totalPrice
+    }
+
+    let timer
+    let seconds
+
+    const checkout = () => {
+      let totalPrice = transactionsTotal();
+
+      if (!totalPrice) {
+        alert("Ndada pi nu pesan!!!")
+        return
+      }
+      
+      let seconds = 3;
+      
+      timer = setInterval(() => {
+
+        if(seconds <= 0){
+          alert("batalkah? kalo jadiji, ulangi! Habis mi waktunu!")
+          clearInterval(timer)
+          document.getElementById("checkout").innerHTML = ""
+        }
+        seconds -= 1
+        document.getElementById("seconds").innerHTML = seconds
+      }, 1000);
+
+      document.getElementById("checkout").innerHTML = `
+      <h2>Total : $ ${totalPrice.toLocaleString()},- </h2>
+      <input type="number" id="uangInput" placeholder="Berapa Uangnu?" />
+      <div>
+          <button class="btn btn-secondary" onclick="bayar()">bayarmi?</button>
+          <button class="btn btn-dark" onclick="kembali()">batal?</button>
+      </div>
+      <h1>Sisa Waktu : <span id="seconds">${seconds}</span></h1>`
       renderData()
     }
 
     function bayar(){
-      let totalPrice = 0
-      let yourChange = 0
-      function refresh(message){
-        alert(message)
+      let uangInput = document.getElementById("uangInput").value
+      uangInput = parseInt(uangInput)
 
-        let noCheckout = document.getElementById("checkout").innerHTML = ""
+      let totalPrice = transactionsTotal()
 
-        mobil.forEach((val, idx) =>{
-          val.stock -= val.cartQuantity
-          val.cartQuantity = 0})
+      if (uangInput >= totalPrice){
+        alert(`mkasi, ini kembaliannu ${(uangInput - totalPrice).toLocaleString()}`)
 
-        stopIt()
-        return renderData()
+        mobil.forEach((val)=> val.checkout())
+        
+        renderData()
+        
+        clearInterval(timer)
+        
+        document.getElementById("checkout").innerHTML = ""
+      } else if (uangInput < totalPrice) {
+        alert(`kurang i uangnu $ ${(totalPrice - uangInput).toLocaleString()}`)
       }
-      
-      mobil.forEach((val, idx) => {
-      totalPrice += val.calculateTotalPrice()})
-      
-      let totalUang = document.getElementById("uang").value
-
-      if(totalUang > totalPrice){
-        yourChange = totalUang - totalPrice
-        message = `OK! Kembaliannu $ ${yourChange.toLocaleString()}`
-        refresh(message)
-      }
-      else if(totalUang == totalPrice){
-        message = `Pas. Nda ada kembalian!`
-        refresh(message)
-      }
-      else {alert(`Kurangi $ ${(totalPrice - totalUang).toLocaleString()}`)}
-      
-    }
-
-    function kembali(){
-      renderData()
-      stopIt()
-      let noCheckout = document.getElementById("checkout").innerHTML = ""
-
-        if (val.cartQuantity = 0){
-            document.getElementById("checkout").innerHTML = alert(`nda adapi nubeli!!!`)
-        }
-
-    }
-
-    function stopIt(){
-      clearInterval(hitungMundur)
-    }
-
-    
+    } 
+   
   </script>
 </body>
 

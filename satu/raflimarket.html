@@ -126,7 +126,9 @@
            cartTotal += val.checkout()
           })
            
-           document.getElementById("checkout").innerHTML = `<H2>Total na Semua : $ ${cartTotal.toLocaleString()}</H2>`;
+           document.getElementById("checkout").innerHTML = `
+           <H2>Total na Semua : $ ${cartTotal.toLocaleString()}</H2>
+           `;
            
             renderData();
           };
